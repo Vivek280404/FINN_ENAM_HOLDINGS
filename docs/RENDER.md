@@ -24,3 +24,7 @@ References: [Render free services](https://render.com/docs/free), [Neon database
 Successful answers are reused for 24 hours, company discovery for one hour and extracted documents for 24 hours. Follow-ups use conversation-aware cache keys. Refresh bypasses saved results; unsuccessful answers are not cached as completed research. Browser history requires its visitor cookie; non-personal research answers can be reused across visitors. The daily model-call counter is atomic and persistent in Neon.
 
 Startup applies versioned PostgreSQL migrations in transactions. Millisecond timestamps use BIGINT. A configured database failure stops startup instead of silently switching to local storage. The legacy Turso adapter remains supported; do not configure both providers.
+
+## Long research requests
+
+The browser uses `/api/research/stream` for progress and a final answer over one connection. Heartbeats prevent an idle connection while documents or synthesis are pending. A research operation has a three-minute stream deadline, with a four-minute browser allowance including host wake-up time. Ordinary `/api/research` remains supported for JSON clients. Errors and interrupted connections produce retry instructions; incomplete research is logged as partial and is never cached as a completed answer.

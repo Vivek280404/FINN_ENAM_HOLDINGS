@@ -2,6 +2,7 @@ import {spawn} from 'node:child_process';
 import {mkdtemp,mkdir} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import assert from 'node:assert/strict';
+import {readResearchStream} from '../web/research-stream.js';
 await mkdir('.local',{recursive:true});
 const dataDir=await mkdtemp(resolve('.local/public-check-')),origin='http://127.0.0.1:14174';
 let child;
@@ -18,5 +19,6 @@ try{
  const history=await (await fetch(origin+'/api/history',{headers:{cookie:cookieA}})).json();assert.equal(history.items.length,1);
  assert.equal((await fetch(origin+'/api/history/'+note.answerKey,{headers:{cookie:cookieB}})).status,404);
  const reopened=await (await fetch(origin+'/api/history/'+note.answerKey,{headers:{cookie:cookieA}})).json();assert.equal(reopened.answer.cache.reused,true);
+ const streamed=await fetch(origin+'/api/research/stream',{method:'POST',headers:{cookie:cookieA,'Content-Type':'application/json'},body:JSON.stringify({symbol:'INFY',question:'Did management deliver on FY26 guidance?'})});assert.match(streamed.headers.get('content-type'),/application\/x-ndjson/);const progress=[];const streamedAnswer=await readResearchStream(streamed,packet=>progress.push(packet.message));assert.equal(streamedAnswer.cache.reused,true);assert.ok(progress.length>0);
  console.log('Public smoke passed: no sign-in, isolated browser histories, forgery rejection and restart persistence.');
 }finally{await stop()}

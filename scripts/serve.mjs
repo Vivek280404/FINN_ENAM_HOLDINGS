@@ -35,7 +35,14 @@ DB={prepare(sql){return {bind(...values){return {async all(){return {results:db.
 }
 const BUCKET={async put(key,bytes){if(!/^documents\/[a-f0-9]{64}$/.test(key))throw new Error('Invalid document storage key');const path=resolve(dataDir,key);await mkdir(dirname(path),{recursive:true});await writeFile(path,bytes)}};
 const env={DB,BUCKET,RESEARCH_FREE_TIER_CONFIRMED:process.env.RESEARCH_FREE_TIER_CONFIRMED,GEMINI_API_KEY:process.env.GEMINI_API_KEY,RESEARCH_API_KEY:process.env.RESEARCH_API_KEY,RESEARCH_MODEL:process.env.RESEARCH_MODEL,PUBLIC_DEMO:config.publicDemo?'true':'false'};
-async function send(res,response){res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()))}
+async function send(res,response){
+ res.writeHead(response.status,Object.fromEntries(response.headers));res.flushHeaders();
+ if(!response.body){res.end();return}
+ const reader=response.body.getReader();
+ const disconnected=()=>{reader.cancel().catch(()=>{})};res.once('close',disconnected);
+ try{while(true){const {done,value}=await reader.read();if(done||res.destroyed)break;if(!res.write(Buffer.from(value)))await new Promise(resolve=>{res.once('drain',resolve);res.once('close',resolve)})}if(!res.destroyed)res.end()}
+ finally{res.off('close',disconnected);reader.releaseLock()}
+}
 const server=createServer(async(req,res)=>{
  try{
   const path=new URL(req.url,'http://localhost').pathname;
