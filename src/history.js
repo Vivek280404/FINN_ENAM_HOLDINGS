@@ -9,7 +9,7 @@ export async function savedResearch(env,key,produce,{refresh=false}={}){
  if(env.DB&&!refresh){const row=await env.DB.prepare('SELECT payload,created,expires FROM research_answers WHERE key = ?').bind(key).first();if(row&&row.expires>Date.now())return {...JSON.parse(row.payload),cache:{reused:true,savedAt:row.created,expiresAt:new Date(row.expires).toISOString()},answerKey:key}}
  if(pending.has(key))return {...await pending.get(key),cache:{reused:true},answerKey:key};
  const job=(async()=>{const result=await produce(),created=new Date().toISOString(),expires=Date.now()+86400e3;
-  if(result.claims?.length&&env.DB)await env.DB.prepare('INSERT OR REPLACE INTO research_answers(key,payload,created,expires) VALUES(?,?,?,?)').bind(key,JSON.stringify(result),created,expires).run();
+  if(result.claims?.length&&env.DB)await env.DB.prepare('INSERT INTO research_answers(key,payload,created,expires) VALUES(?,?,?,?) ON CONFLICT(key) DO UPDATE SET payload=excluded.payload,created=excluded.created,expires=excluded.expires').bind(key,JSON.stringify(result),created,expires).run();
   return {...result,answerKey:key,cache:{reused:false,savedAt:created,expiresAt:new Date(expires).toISOString()}};
  })();pending.set(key,job);try{return await job}finally{pending.delete(key)}
 }

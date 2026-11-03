@@ -16,7 +16,5 @@ services:
         value: gemini-3.5-flash-lite
       - key: RESEARCH_FREE_TIER_CONFIRMED
         value: "true"
-      - key: TURSO_DATABASE_URL
-        sync: false
-      - key: TURSO_AUTH_TOKEN
+      - key: DATABASE_URL
         sync: false

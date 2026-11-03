@@ -9,9 +9,11 @@
     "validate": "node scripts/validate-artifact.mjs",
     "export:source": "node scripts/export-source.mjs",
     "check:standalone": "node scripts/check-standalone.mjs",
-    "check:public": "node scripts/check-public.mjs"
+    "check:public": "node scripts/check-public.mjs",
+    "check:neon": "node scripts/check-neon.mjs"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
     "unpdf": "^1.4.0"
   },
   "devDependencies": {

@@ -10,7 +10,7 @@ const port=Number(process.env.CHECK_PORT||14173),origin='http://127.0.0.1:'+port
 const authorization='Basic '+Buffer.from('finn:'+token).toString('base64');
 let child;
 async function start(){
- child=spawn(process.execPath,['scripts/serve.mjs'],{cwd:root,env:{...process.env,GEMINI_API_KEY:'',RESEARCH_API_KEY:'',RESEARCH_FREE_TIER_CONFIRMED:'false',HOST:'127.0.0.1',PORT:String(port),DATA_DIR:dataDir,APP_ACCESS_TOKEN:token,APP_ORIGIN:origin},stdio:['ignore','pipe','pipe'],windowsHide:true});
+ child=spawn(process.execPath,['scripts/serve.mjs'],{cwd:root,env:{...process.env,PUBLIC_DEMO:'false',DATABASE_URL:'',TURSO_DATABASE_URL:'',TURSO_AUTH_TOKEN:'',GEMINI_API_KEY:'',RESEARCH_API_KEY:'',RESEARCH_FREE_TIER_CONFIRMED:'false',HOST:'127.0.0.1',PORT:String(port),DATA_DIR:dataDir,APP_ACCESS_TOKEN:token,APP_ORIGIN:origin},stdio:['ignore','pipe','pipe'],windowsHide:true});
  let output='';child.stdout.on('data',c=>output+=c);child.stderr.on('data',c=>output+=c);
  for(let i=0;i<100;i++){if(child.exitCode!==null)throw new Error('Standalone server exited before readiness: '+output);try{if((await fetch(origin+'/health',{signal:AbortSignal.timeout(500)})).ok)return}catch{}await new Promise(r=>setTimeout(r,100))}
  throw new Error('Standalone readiness check timed out.');

@@ -28,7 +28,7 @@ async function cached(env,key,ttl,fn){
  let row=memory.get(key);if(row?.expires>Date.now())return row.value;
  if(env.DB){row=await env.DB.prepare('SELECT payload,expires FROM cache WHERE key = ?').bind(key).first();if(row&&row.expires>Date.now()){const value=JSON.parse(row.payload);memory.set(key,{expires:row.expires,value});return value}}
  if(inflight.has(key))return inflight.get(key);
- const p=(async()=>{const value=await fn(),expires=Date.now()+ttl;memory.set(key,{value,expires});if(memory.size>24)memory.delete(memory.keys().next().value);if(env.DB)await env.DB.prepare('INSERT OR REPLACE INTO cache(key,payload,expires) VALUES(?,?,?)').bind(key,JSON.stringify(value),expires).run();return value})();
+ const p=(async()=>{const value=await fn(),expires=Date.now()+ttl;memory.set(key,{value,expires});if(memory.size>24)memory.delete(memory.keys().next().value);if(env.DB)await env.DB.prepare('INSERT INTO cache(key,payload,expires) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET payload=excluded.payload,expires=excluded.expires').bind(key,JSON.stringify(value),expires).run();return value})();
  inflight.set(key,p);try{return await p}finally{inflight.delete(key)}
 }
 async function exchange(path){
@@ -69,7 +69,7 @@ async function ingest(doc,env,{refresh=false}={}){if(refresh){memory.delete('doc
  if(doc.issuer){const text=pages.slice(0,3).map(p=>p.text).join(' ').toLowerCase().replace(/[^a-z0-9]/g,'');const words=doc.issuer.toLowerCase().split(/\W+/).filter(w=>w.length>=4&&!['limited','india','company','ltd','corporation','industries'].includes(w));if(words.length&&!words.some(w=>text.includes(w)))throw new Error('Document issuer does not match the requested company');}
  const result={...doc,title:documentTitle(doc,pages),totalPages,partial,id:hash.slice(0,20),hash,pages,fetched:now()};
  if(env.BUCKET)await env.BUCKET.put('documents/'+hash,bytes,{httpMetadata:{contentType:'application/pdf'}});
- if(env.DB)await env.DB.prepare('INSERT OR IGNORE INTO documents(id,company,url,hash,kind,published,fetched,payload) VALUES(?,?,?,?,?,?,?,?)').bind(result.id,doc.company,doc.url,hash,doc.kind,doc.published||null,result.fetched,JSON.stringify(result)).run();
+ if(env.DB)await env.DB.prepare('INSERT INTO documents(id,company,url,hash,kind,published,fetched,payload) VALUES(?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING').bind(result.id,doc.company,doc.url,hash,doc.kind,doc.published||null,result.fetched,JSON.stringify(result)).run();
  return result;
  })}
 async function research(symbol,question,env,{refresh=false,context=null}={}){

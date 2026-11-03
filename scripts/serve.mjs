@@ -6,11 +6,18 @@ import {fileURLToPath} from 'node:url';
 import {standaloneConfig,standaloneIdentity,authenticationResponse,publicVisitor} from '../src/standalone.js';
 import worker from '../dist/server/index.js';
 import {remoteDatabase,migrateRemote} from '../src/remote-database.js';
+import {neonDatabase,migrateNeon} from '../dist/neon-database.js';
 const root=fileURLToPath(new URL('../',import.meta.url)),config=standaloneConfig();
 const dataDir=resolve(config.dataDir);await mkdir(dataDir,{recursive:true});
 let db,DB;
 const journal=JSON.parse(await readFile(resolve(root,'drizzle/meta/_journal.json'),'utf8'));
-if(process.env.TURSO_DATABASE_URL||process.env.TURSO_AUTH_TOKEN){
+if(process.env.DATABASE_URL){
+ if(process.env.TURSO_DATABASE_URL||process.env.TURSO_AUTH_TOKEN)throw new Error('Configure DATABASE_URL or Turso, not both.');
+ DB=neonDatabase(process.env.DATABASE_URL);
+ const migrations=await Promise.all(journal.entries.map(async m=>({name:m.tag,sql:await readFile(resolve(root,'drizzle',m.tag+'.sql'),'utf8')})));
+ for(let attempt=0;attempt<3;attempt++){try{await migrateNeon(DB,migrations);break}catch(error){if(attempt===2)throw error;console.warn('Database startup connection delayed; retrying.');await new Promise(resolve=>setTimeout(resolve,250*(2**attempt)))}}
+ console.log('Persistent Neon database connected.');
+}else if(process.env.TURSO_DATABASE_URL||process.env.TURSO_AUTH_TOKEN){
  DB=remoteDatabase(process.env.TURSO_DATABASE_URL,process.env.TURSO_AUTH_TOKEN);
  const migrations=await Promise.all(journal.entries.map(async m=>({name:m.tag,sql:await readFile(resolve(root,'drizzle',m.tag+'.sql'),'utf8')})));
  await migrateRemote(DB,migrations);
@@ -32,7 +39,7 @@ async function send(res,response){res.writeHead(response.status,Object.fromEntri
 const server=createServer(async(req,res)=>{
  try{
   const path=new URL(req.url,'http://localhost').pathname;
-  if(path==='/health'&&req.method==='GET'){res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end('{"status":"ok"}');return}
+  if(path==='/health'&&req.method==='GET'){const database=DB.kind||(db?'sqlite':'turso');res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify({status:'ok',database,persistent:database!=='sqlite'}));return}
   const visitor=config.publicDemo?publicVisitor(req.headers,config.origin):null;
   const headers=visitor?.headers||standaloneIdentity(req.headers,config.token);
   if(visitor?.cookie)res.setHeader('Set-Cookie',visitor.cookie);

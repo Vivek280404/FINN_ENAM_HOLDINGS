@@ -10,7 +10,7 @@ A mobile-first investor briefing and primary-source research application for the
 
 Use the **Free** service plan. Set `GEMINI_API_KEY` in Render's private environment settings. Never place a real key in this repository. `render.yaml` configures the model, free-tier-only operation and public demo mode. See [the independent deployment guide](docs/RENDER.md).
 
-For durable free storage, set `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN`. Without them, the server uses SQLite on its local disk; Render's free local disk resets when the service sleeps or restarts.
+For durable storage, set `DATABASE_URL` to the Neon PostgreSQL connection string in Render's private environment settings. Without it, the server uses SQLite on its local disk; Render's free local disk resets when the service sleeps or restarts.
 
 ## Run locally
 

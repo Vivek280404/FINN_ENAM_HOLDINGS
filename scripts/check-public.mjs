@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 await mkdir('.local',{recursive:true});
 const dataDir=await mkdtemp(resolve('.local/public-check-')),origin='http://127.0.0.1:14174';
 let child;
-async function start(){child=spawn(process.execPath,['scripts/serve.mjs'],{env:{...process.env,HOST:'127.0.0.1',PORT:'14174',APP_ORIGIN:origin,PUBLIC_DEMO:'true',APP_ACCESS_TOKEN:'',DATA_DIR:dataDir,TURSO_DATABASE_URL:'',TURSO_AUTH_TOKEN:'',GEMINI_API_KEY:'',RESEARCH_API_KEY:'',RESEARCH_FREE_TIER_CONFIRMED:'false'},stdio:['ignore','pipe','pipe'],windowsHide:true});let output='';child.stdout.on('data',x=>output+=x);child.stderr.on('data',x=>output+=x);for(let i=0;i<100;i++){if(child.exitCode!==null)throw Error(output);try{if((await fetch(origin+'/health')).ok)return}catch{}await new Promise(r=>setTimeout(r,100))}throw Error('Public preview did not start')}
+async function start(){child=spawn(process.execPath,['scripts/serve.mjs'],{env:{...process.env,HOST:'127.0.0.1',PORT:'14174',APP_ORIGIN:origin,PUBLIC_DEMO:'true',APP_ACCESS_TOKEN:'',DATA_DIR:dataDir,DATABASE_URL:'',TURSO_DATABASE_URL:'',TURSO_AUTH_TOKEN:'',GEMINI_API_KEY:'',RESEARCH_API_KEY:'',RESEARCH_FREE_TIER_CONFIRMED:'false'},stdio:['ignore','pipe','pipe'],windowsHide:true});let output='';child.stdout.on('data',x=>output+=x);child.stderr.on('data',x=>output+=x);for(let i=0;i<100;i++){if(child.exitCode!==null)throw Error(output);try{if((await fetch(origin+'/health')).ok)return}catch{}await new Promise(r=>setTimeout(r,100))}throw Error('Public preview did not start')}
 async function stop(){if(child?.exitCode===null)await new Promise(resolve=>{child.once('exit',resolve);child.kill()})}
 try{
  await start();

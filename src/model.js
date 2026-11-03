@@ -6,7 +6,7 @@ export const configured=env=>Boolean(env.RESEARCH_FREE_TIER_CONFIRMED==='true'&&
 const dailyCalls=new Map();
 async function reserveCall(env){
  const day=new Date().toISOString().slice(0,10),limit=20;
- if(env.DB){const row=await env.DB.prepare("INSERT INTO cache(key,payload,expires) VALUES(?, '1', ?) ON CONFLICT(key) DO UPDATE SET payload=CAST(cache.payload AS INTEGER)+1 WHERE CAST(cache.payload AS INTEGER) < ? RETURNING payload").bind('model-budget:'+day,Date.now()+2*86400e3,limit).first();if(!row)throw new Error('The 20-call daily research limit has been reached. Cached answers and source evidence remain available.');}
+ if(env.DB){const row=await env.DB.prepare("INSERT INTO cache(key,payload,expires) VALUES(?, '1', ?) ON CONFLICT(key) DO UPDATE SET payload=CAST((CAST(cache.payload AS INTEGER)+1) AS TEXT) WHERE CAST(cache.payload AS INTEGER) < ? RETURNING payload").bind('model-budget:'+day,Date.now()+2*86400e3,limit).first();if(!row)throw new Error('The 20-call daily research limit has been reached. Cached answers and source evidence remain available.');}
  else{const count=dailyCalls.get(day)||0;if(count>=limit)throw new Error('The daily research limit has been reached.');dailyCalls.set(day,count+1);if(dailyCalls.size>2)dailyCalls.delete(dailyCalls.keys().next().value)}
 }
 export async function modelAnswer(question,evidence,env,send=fetch){
