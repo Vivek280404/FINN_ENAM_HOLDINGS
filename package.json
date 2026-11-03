@@ -1,0 +1,23 @@
+{
+  "name": "finn-investor-workbench",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "validate": "node scripts/validate-artifact.mjs",
+    "export:source": "node scripts/export-source.mjs",
+    "check:standalone": "node scripts/check-standalone.mjs",
+    "check:public": "node scripts/check-public.mjs"
+  },
+  "dependencies": {
+    "unpdf": "^1.4.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

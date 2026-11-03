@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: finn-investment-research
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: PUBLIC_DEMO
+        value: "true"
+      - key: DATA_DIR
+        value: /data
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: RESEARCH_MODEL
+        value: gemini-3.5-flash-lite
+      - key: RESEARCH_FREE_TIER_CONFIRMED
+        value: "true"
+      - key: TURSO_DATABASE_URL
+        sync: false
+      - key: TURSO_AUTH_TOKEN
+        sync: false

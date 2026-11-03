@@ -1,0 +1,16 @@
+services:
+  finn:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4173:4173"
+    environment:
+      APP_ACCESS_TOKEN: ${APP_ACCESS_TOKEN:?Set a private password of at least 24 characters}
+      APP_ORIGIN: ${APP_ORIGIN:-http://127.0.0.1:4173}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      RESEARCH_MODEL: ${RESEARCH_MODEL:-gemini-3.5-flash-lite}
+      RESEARCH_FREE_TIER_CONFIRMED: ${RESEARCH_FREE_TIER_CONFIRMED:-false}
+    volumes:
+      - finn-data:/data
+volumes:
+  finn-data:

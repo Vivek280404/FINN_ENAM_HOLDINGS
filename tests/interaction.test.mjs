@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {researchQuestion,defaultQuestion,validCompany,preferenceBoost} from '../web/interaction.js';
+import {retrievePages} from '../src/research.js';
+test('blank Investigate submits a useful company overview',()=>assert.equal(researchQuestion('   '),defaultQuestion));
+test('valid questions are preserved',()=>assert.equal(researchQuestion('  What drove margins? '),'What drove margins?'));
+test('short question receives actionable validation',()=>assert.throws(()=>researchQuestion('nnn'),/complete question/));
+test('unverified ticker does not replace the selected company',()=>assert.equal(validCompany({symbol:'DS',resolved:false}),false));
+test('resolved unfamiliar company can be selected',()=>assert.equal(validCompany({symbol:'DIXON',resolved:true}),true));
+test('all interest preferences affect matching events',()=>{assert.equal(preferenceBoost({category:'management_change',tier:1},{management:true}),3);assert.equal(preferenceBoost({category:'litigation',tier:1},{governance:true}),3)});
+test('critical events remain above preference boosts',()=>assert.ok(preferenceBoost({tier:0},{})>preferenceBoost({category:'results',tier:1},{performance:true})));
+test('page retrieval covers both transcripts instead of just one',()=>{const docs=['a','b'].map(id=>({id,title:id,url:'https://www.infosys.com/x.pdf',pages:Array.from({length:6},(_,i)=>({page:i+1,text:'Revenue growth and margins remained under pressure.'}))}));const evidence=retrievePages('What are revenue growth risks?',docs);assert.ok(evidence.length>=8&&evidence.length<=16);assert.ok(evidence.some(p=>p.id.startsWith('a-')));assert.ok(evidence.some(p=>p.id.startsWith('b-')))});

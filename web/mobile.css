@@ -1,0 +1,123 @@
+/* Phone layouts use the same reports, evidence and research threads as desktop. */
+.research-form textarea {
+  flex: 1; min-width: 0; width: 100%; border: 0; background: none;
+  color: #315237; font: inherit; font-size: 14px; line-height: 1.6;
+  padding: 10px 14px; resize: vertical; min-height: 52px; max-height: 220px;
+}
+.research-form textarea::placeholder { color: #73846f; }
+.research-form textarea:focus { outline: none; }
+@media screen and (max-width: 720px) {
+  html { scroll-padding-bottom: calc(94px + env(safe-area-inset-bottom)); }
+  body { padding-bottom: env(safe-area-inset-bottom); }
+  .site-header { min-height: 72px; padding: 12px 18px; gap: 12px; }
+  .brand { font-size: 20px; gap: 7px; }
+  .brand-symbol { width: 30px; height: 30px; }
+  .desktop-nav { margin-left: auto; }
+  .desktop-nav a, .desktop-nav #preferencesBtn, .desktop-nav #aboutBtn { display: none; }
+  .desktop-nav #historyBtn { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 12px; font-size: 12px; text-transform: none; }
+  .icon-button { min-width: 44px; min-height: 44px; font-size: 18px; }
+  .mobile-nav { left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom)); padding: 5px; border-radius: 16px; }
+  .mobile-nav a, .mobile-nav button { min-height: 46px; flex: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; padding: 10px 8px; border-radius: 11px; }
+  footer { padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
+  button, summary, .secondary, .text-button, .source-open { min-height: 44px; }
+  .primary, .secondary { white-space: normal; font-size: 13px; line-height: 1.5; }
+  input, select, textarea, .research-form input, .research-form textarea,
+  .followup-desk .research-form textarea, .select-wrap select, .ticker-entry input,
+  .filters select { font-size: 16px; min-height: 48px; }
+  .research-form textarea { display: block; padding: 10px; min-height: 86px; }
+  .research-form .primary, .followup-desk .research-form .primary { font-size: 14px; min-height: 48px; }
+  .company-controls label, .research-desk #formMessage { font-size: 12px; line-height: 1.7; }
+  .ticker-entry { flex-wrap: wrap; }
+  .ticker-entry input { flex: 1 1 140px; width: 0; }
+  .ticker-entry .secondary { font-size: 12px; padding: 10px 12px; }
+  .active-company { flex-wrap: wrap; gap: 10px; }
+  .active-company strong { font-size: 14px; }
+  .active-company small { font-size: 12px; }
+  .active-company .text-button { font-size: 12px; }
+  .research-desk, #researchResult, #companyCoverage, .research-empty, .connection-note { max-width: calc(100% - 28px); }
+  .research-hero, .research-desk, .institutional-report, .followup-desk { padding: 22px 18px; }
+  .research-hero > div > p, .followup-help { font-size: 14px; line-height: 1.8; }
+  .suggestions { grid-template-columns: 1fr; }
+  .suggestions button { font-size: 13px; padding: 11px 14px; }
+  .institutional-report .answer-header h2 { font-size: clamp(25px, 6.8vw, 34px); overflow-wrap: anywhere; }
+  .institutional-report .answer-prose p, .institutional-report .answer-prose p:first-child,
+  .executive-view .answer-prose p { font-size: 15px !important; line-height: 1.85; }
+  .answer-meta, .institutional-report .answer-toolbar { font-size: 11px; line-height: 1.7; }
+  .report-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .report-actions .primary, .report-actions .secondary, .report-actions .text-button { width: 100%; justify-content: center; text-align: center; font-size: 13px; min-height: 46px; margin: 0; }
+  .report-contents { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; padding: 10px 0; scroll-snap-type: x proximity; scrollbar-width: none; }
+  .report-contents button { flex-shrink: 0; font-size: 12px; padding: 10px 12px; scroll-snap-align: start; }
+  .report-section-heading h3 { font-size: 21px; }
+  .report-section-heading p, .report-limitations p, .valuation-boundary p,
+  .next-checks li, .research-scope p, .source-card p { font-size: 13px; line-height: 1.8; }
+  .institutional-report .inline-cite { display: inline-flex; align-items: center; min-height: 26px; font-size: 11px; padding: 3px 6px; }
+  .scorecard-scroll { overflow: visible; border: 0; border-radius: 0; }
+  .financial-scorecard { min-width: 0; display: block; width: 100%; }
+  .financial-scorecard thead { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }
+  .financial-scorecard tbody { display: grid; gap: 14px; }
+  .financial-scorecard tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border: 1px solid #d5e1cd; border-radius: 10px; padding: 14px; background: #f6f9f2; }
+  .financial-scorecard td { display: block; min-width: 0; border: 0; padding: 8px 0; font-size: 13px; }
+  .financial-scorecard td:first-child, .financial-scorecard td:nth-child(2), .financial-scorecard td:last-child { grid-column: 1 / -1; }
+  .financial-scorecard td::before { content: attr(data-label); display: block; color: #657b5c; font-size: 11px; font-weight: 400; margin-bottom: 4px; }
+  .financial-scorecard td:first-child::before { display: none; }
+  .financial-scorecard td strong { font-size: 15px; }
+  .financial-scorecard small { max-width: none; font-size: 11px; line-height: 1.7; color: #65765e; }
+  .financial-scorecard td.numeric { white-space: normal; overflow-wrap: anywhere; padding-right: 8px; font-size: 17px; font-weight: 600; }
+  .financial-scorecard .cite { font-size: 12px; }
+  .comparison-charts { grid-template-columns: minmax(0, 1fr); }
+  .comparison-chart figcaption { font-size: 13px; flex-wrap: wrap; }
+  .comparison-chart > small { font-size: 11px; }
+  .next-check-action { font-size: 12px; min-height: 44px; padding: 8px 12px; }
+  .followup-desk h2 { font-size: 25px; }
+  .followup-desk .eyebrow, .thread-context .eyebrow { font-size: 10px; }
+  .thread-context p, .thread-trail button, .next-investigations button { font-size: 13px; }
+  .thread-context small, .thread-evidence-note, .followup-footer small { font-size: 12px !important; }
+  .thread-context > .secondary, .followup-footer .text-button { font-size: 12px; }
+  .next-investigations > span { font-size: 11px; }
+  .source-card { min-width: 0; overflow-wrap: anywhere; }
+  .source-open, .source-pages a { font-size: 12px; min-height: 44px; display: inline-flex; align-items: center; }
+  .source-passages p { font-size: 13px; }
+  .source-passages small { font-size: 11px; }
+  .section-row { flex-wrap: wrap; gap: 12px; }
+  .brief-content { padding: 32px 18px; }
+  .editorial-hero { padding: 26px 18px 0; }
+  .editorial-hero h1 { font-size: clamp(36px, 10vw, 55px); }
+  .editorial-hero > p, .section-intro > p, .event-card > p, .investigation-head > p { font-size: 14px; }
+  .hero-actions { flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+  .hero-actions .primary, .hero-link { font-size: 12px; min-height: 44px; }
+  .source-wordmarks { flex-wrap: wrap; gap: 12px 18px; }
+  .source-wordmarks span { font-size: 11px; }
+  .summary-strip strong { font-size: 34px; letter-spacing: -1px; }
+  .summary-strip span { font-size: 11px; line-height: 1.5; }
+  .event-card { padding: 20px 17px; }
+  .event-card h2 { font-size: 27px; line-height: 1.25; }
+  .company-line { flex-wrap: wrap; }
+  .company-line time { margin-left: 51px; font-size: 11px; }
+  .company-name small { font-size: 11px; }
+  .metrics { grid-template-columns: 1fr; }
+  .metric { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 15px; }
+  .metric + .metric { border-left: 0; border-top: 1px solid #d3dfd6; }
+  .metric span { font-size: 12px; align-self: center; }
+  .metric strong { font-size: 25px; margin: 0; grid-column: 2; grid-row: 1 / 3; align-self: center; }
+  .metric small { font-size: 11px; }
+  .reason { font-size: 13px; }
+  .card-bottom { flex-direction: column; align-items: stretch; gap: 8px; }
+  .card-bottom .primary, .source-link { font-size: 13px; }
+  .mode-banner { align-items: flex-start; flex-direction: column; gap: 6px; font-size: 12px; }
+  .mode-banner .text-button { font-size: 12px; white-space: normal; }
+  .investigation-head, .investigation-grid, .back { margin-left: 18px; margin-right: 18px; }
+  .investigation-head h1 { font-size: 33px; }
+  .panel p, .timeline-row p { font-size: 13px; }
+  .guidance-graphic .timeline-row small, .guidance-graphic .timeline-row p { font-size: 12px; }
+  .guidance-graphic .cite { font-size: 11px; }
+  dialog { width: calc(100% - 24px); max-width: 620px; max-height: calc(100dvh - 32px - env(safe-area-inset-bottom)); margin: auto; padding: 20px; overflow-y: auto; overscroll-behavior: contain; }
+  .dialog-head { position: sticky; top: -20px; background: #fbfcf8; padding: 12px 0; z-index: 1; }
+  .dialog-head h2 { font-size: 23px; }
+  .history-item strong { font-size: 14px; }
+  .history-item small, .history-intro { font-size: 12px !important; }
+  #toast { bottom: calc(84px + env(safe-area-inset-bottom)); font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}

@@ -1,0 +1,12 @@
+import {execFileSync} from 'node:child_process';
+import {resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('../',import.meta.url));
+const dirty=execFileSync('git',['status','--porcelain'],{cwd:root,encoding:'utf8'}).trim();
+if(dirty)throw new Error('Commit the reviewed source before exporting; the archive must match the tested revision.');
+const paths=execFileSync('git',['ls-files'],{cwd:root,encoding:'utf8'}).trim().split(/\r?\n/);
+const unsafe=paths.filter(p=>/(?:^|\/)(?:node_modules|\.local|\.git)(?:\/|$)|(?:^|\/)\.env(?:\.|$)|\.sqlite(?:-|$)|\.tar\.gz$/.test(p)&&!p.endsWith('.env.example'));
+if(unsafe.length)throw new Error('Tracked local state or credential files must be removed before export: '+unsafe.join(', '));
+const target=resolve(root,'..','finn-github-source.zip');
+execFileSync('git',['archive','--format=zip','--output='+target,'HEAD'],{cwd:root});
+console.log(target);
