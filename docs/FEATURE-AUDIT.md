@@ -1,45 +1,29 @@
-# FINN functionality audit — 31 October 2026
+# Assignment coverage — 3 November 2026
 
-This is a working prototype with explicit limits. Passing unit checks does not establish that every requested investment workflow is complete.
+This audit compares the supplied ENAM brief with the implemented prototype. The brief explicitly treats feature examples as a menu and values one or two reliable workflows over completeness. It does not require chat, voice, a native app, or every financial output.
 
-| Area | Status | Evidence / limitation |
-|---|---|---|
-| Mobile-first briefing, investigation and research | Working | Dark interface; connected navigation; responsive layouts |
-| Investigate without entering a question | Fixed | Defaults to business, revenue and cash-flow overview; covered by client and service tests |
-| Invalid questions | Working | Visible validation; no silent native-form block |
-| Failed ticker lookup | Fixed | Unverified identities do not replace the current company |
-| Loading, timeout, cancellation and retry | Working | Visible status, 45-second browser bound, cancellable research/lookup and retry action |
-| Portfolio | Working demo scope | 18 NSE symbols across sectors; no real holdings or assumed weights |
-| Briefing time windows and routine disclosures | Working | 24-hour, 7-day and 30-day filters; routine items expand separately |
-| Current portfolio filing discovery | Partial | NSE source availability and returned response window limit coverage; empty response does not prove absence |
-| Company-relative financial materiality | Partial | Deterministic ratio helper exists; live filings do not yet automatically extract and validate event amounts and denominators |
-| Lightweight investor preferences | Working | Performance, management and governance preferences affect ordering; critical-risk tier stays visible |
-| EOD price and volume checks | Working on request | Configurable thresholds, prior 20-session baseline, stale/missing/liquidity/corporate-action safeguards |
-| Continuous alerts or external notifications | Not implemented | Checks occur when requested; no claim of intraday or background monitoring |
-| Financial comparison validation | Working functions | Units, scope, currency, periods, definitions, non-positive bases and percentage points are tested |
-| Sector-specific automated financial analysis | Not implemented | Bank/NBFC EBITDA assumptions are avoided; dedicated extraction/analysis templates remain to be built |
-| Guidance revision history | Working reviewed case | Infosys: original, three revisions and final FY26 outcome; dates and primary links retained |
-| Guidance extraction for arbitrary companies | Not complete | Generic primary-document retrieval works; automatic ledger creation and full-period actual matching are not implemented |
-| Unfamiliar ticker research | Working evidence retrieval | DIXON discovery and transcript parsing verified in earlier live checks; source coverage can be partial |
-| Question-aware evidence retrieval | Improved, partial | Pages are balanced across selected documents; complete per-quarter and contradictory-evidence coverage is not guaranteed |
-| Document deduplication | Working by content hash | Identical bytes reuse extraction; originals and source locations are retained |
-| Generic event threading and corrected-filing invalidation | Not complete | Historical guidance revisions are preserved, but generic dependent-answer invalidation remains unimplemented |
-| Sources and PDF page references | Working | Primary document links and retrieved page locations are inspectable |
-| Full claim-level entailment verification | Partial | Citation IDs are validated; reviewed case checked manually; general semantic verification remains a release gate |
-| Gemini native adapter | Working through AI Studio | Developer API accepted the key; real cited answers returned for DIXON and MARUTI. Vertex is not used. |
-| Free-only generation | Guarded | AI Studio free-tier model allowlist, 20 model calls per day, 30-minute answer cache, 1,600 output-token cap, and no automatic paid fallback |
-| Repository and submission package | Partial | Source is saved to the Sites repository; an ENAM GitHub repository, covering email and build-history package are not yet submitted |
+| Requirement / workflow | Implemented behavior | Boundary |
+| --- | --- | --- |
+| Mobile-first working prototype | Responsive briefing, event investigation and company research; black/gold interface; phone navigation and touch controls | Responsive web, not an app-store package |
+| Mock portfolio of 15–20 companies | 18 NSE companies across sectors | Watchlist, not connected brokerage holdings |
+| Windowed portfolio digest | 24-hour, 7-day and 30-day views; prioritised disclosures; routine items collapsed; event-to-research navigation | Current feed depends on the exchange response window; historical replay is explicitly labeled |
+| Triggered observations | Configurable EOD price/volume thresholds and on-request market checks | No continuous background monitor, device push or email alerts |
+| Announcement judgment | Category screening, investor interests and protected critical-risk tiers | Live relative financial materiality is not automatically extracted |
+| On-demand company research | Company discovery, annual reports/transcripts, executive view, analysis, risks, financial facts, conclusion and next checks | Evidence can be partial; no claim of exhaustive multi-period research |
+| Chat / interaction | Ask a follow-up beneath a report; company and thread retained; earlier turns reopen from history | Contextual research conversation, not a general-purpose chatbot; chat is optional in the brief |
+| Guidance versus delivery | Reviewed Infosys original guidance, revisions and comparable full-year outcome; deterministic comparison rules | Generic automatic guidance-ledger extraction is not complete |
+| Research generalises beyond demo | Dynamic NSE ticker lookup and primary-source discovery; Dixon is outside the 18-company watchlist | Missing reports and blocked publishers remain visible |
+| Three demonstration companies | Infosys, Dixon and Maruti have returned live cited research | Only Infosys has a manually reviewed full guidance timeline; see VALIDATION.md |
+| Primary-source discipline | Research evidence from company/exchange reports and transcripts; directory used only to discover links | No broker/news enrichment for research; citations are inspectable, not an independent audit |
+| Financial reliability | Period/unit/currency/scope/definition/sign checks, compatible calculations and chart eligibility | Unsupported facts are omitted; sector-specific completeness is not guaranteed |
+| Efficiency and persistence | Neon PostgreSQL; 24-hour answer cache; document/discovery caches; in-flight reuse; persistent usage counter | Free-provider availability and daily 20-call cap remain |
+| Failures and latency | Live progress stream, bounded timeouts/retry, visible provider failure reason, previous report preserved | Google can still return 503/429; incomplete answers are not cached as completed |
+| Public delivery | Render app and public GitHub; no visitor sign-in; server-side credentials | Free hosting may wake slowly |
+| Covering note | Template in SUBMISSION.md covers decisions, exclusions and next work | Candidate must send the email |
+| Actual coding-agent build history | Still required separately | BUILD-DECISIONS.md and Git commits are not substitutes for a real conversation export/share link |
 
-## Automated regression coverage
+## Deliberately outside prototype scope
 
-54 tests pass: financial comparability and calculations, guidance periods and definitions, market safeguards, source URL restrictions, request validation, citation IDs, Gemini error handling, free-tier configuration gate, default Investigate behavior, ticker selection and preference ordering, balanced document retrieval, and concurrent prepared-case requests.
+Continuous monitoring, external notifications, management biography enrichment, complete quarterly Revenue/EBITDA/PBT/PAT extraction for every live event, automatic corrected-filing invalidation, universal guidance reconciliation, OCR, valuation/price targets and portfolio-position attribution.
 
-## Remaining submission priorities
-
-1. Completed: connect AI Studio and verify live cited research. Google billing settings were not changed.
-2. Validate three to five research demonstration companies and capture their actual document coverage.
-3. Add validated live-event financial context if time permits; otherwise disclose category-only screening.
-4. Finish GitHub and the covering email with accurate limits and build-history links.
-
-Latest live checks: DIXON returned four source-linked claims in approximately 18 seconds. MARUTI returned a cited answer in approximately 22 seconds after company-host/CDN transcript discovery was repaired. Oversized annual reports remain explicitly unavailable; transcript-based answers do not claim full annual-report coverage.
-
+The app must not be presented as implementing all of these. The strongest demonstrations are briefing → event → guidance investigation, and company research → cited answer → contextual follow-up → saved history.

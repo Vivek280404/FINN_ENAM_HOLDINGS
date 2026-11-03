@@ -58,7 +58,7 @@ export function assessGuidance(g, actual) {
   return {status:'Within range',difference:round(actual.value-g.low)};
 }
 export function materiality(event, denominator) {
-  const critical=['insolvency','auditor_resignation','default','fraud'];
+  const critical=['insolvency','auditor_resignation','default','fraud','credit_downgrade'];
   if(critical.includes(event.category))return {tier:0,label:'Review now',reason:'Potential governance or solvency risk; preferences do not hide this event'};
   if(event.amount!=null && denominator?.value>0 && event.currency===denominator.currency){
     const ratio=event.amount/denominator.value*100;

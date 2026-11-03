@@ -16,7 +16,7 @@ The review inspected the implemented application, not just the proposal. The scr
 | Auditor resignation or fraud can be collapsed as routine | Critical governance/solvency classification takes precedence over results and management keywords | Magnitude ranking remains category screening until validated amount/denominator extraction |
 | An answer cache can conceal newer or corrected disclosures | Visible preparation date, saved-answer label and explicit refresh that rechecks source bytes | No continuous correction watcher or automatic invalidation |
 | Research cannot be carried into another workflow | Cited Markdown export and source appendix | PDF/Word research exports are not included |
-| Deployment depends on Sites identity and database APIs | Independent authenticated Node/SQLite adapter, persistent Docker setup, CI and deployment guide | GitHub Pages cannot host a dynamic backend; Docker needs a supported host |
+| Deployment depends on platform-specific identity and database APIs | Independent Node adapter, account-free visitor cookies, persistent Neon PostgreSQL, Docker, CI and deployment guide | GitHub Pages cannot host a dynamic backend; Render free hosting can wake slowly |
 
 ## Architecture decision
 

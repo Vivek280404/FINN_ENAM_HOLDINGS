@@ -4,6 +4,10 @@ A mobile-first investor briefing and primary-source research application for the
 
 **Live app:** https://finn-investment-research-86hh.onrender.com/ — no visitor sign-in required.
 
+**Start here:** [five-minute evaluator guide](docs/EVALUATOR-GUIDE.md), [assignment coverage and limits](docs/FEATURE-AUDIT.md), [validation](docs/VALIDATION.md), [submission checklist](docs/SUBMISSION.md).
+
+The two main workflows are briefing → event → guidance investigation, and company research → contextual follow-up → saved history. The default watchlist has 18 companies; live research has been checked for Infosys, Dixon and Maruti. The brief's output examples are a menu, not a claim that every possible financial workflow is complete. Filing and EOD checks run on request; continuous notifications are outside this prototype.
+
 ## Deploy
 
 [Deploy to Render](https://render.com/deploy?repo=https://github.com/Vivek280404/FINN_ENAM_HOLDINGS)
