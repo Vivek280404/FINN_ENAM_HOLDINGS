@@ -18,9 +18,12 @@ export async function modelAnswer(question,evidence,env,send=fetch){
  let response;
  for(let attempt=0;attempt<2;attempt++){
   await reserveCall(env);
-  response=await send(`${backend}${encodeURIComponent(model)}:generateContent`,{...payload,signal:AbortSignal.timeout(attempt?20000:50000)});
+  try{response=await send(`${backend}${encodeURIComponent(model)}:generateContent`,{...payload,signal:AbortSignal.timeout(attempt?25000:50000)})}catch(error){throw new Error(error.name==='TimeoutError'||error.name==='AbortError'?'Research synthesis timed out. Your source documents are ready; retry the same question.':'Gemini could not be reached. Your source documents are ready; please retry shortly.')}
   if(![500,502,503,504].includes(response.status)||attempt)break;
+  const retryAfter=Number(response.headers.get('retry-after'));
   await response.body?.cancel();
+  env.RESEARCH_PROGRESS?.('Research service is busy; retrying once');
+  await new Promise(resolve=>setTimeout(resolve,Number.isFinite(retryAfter)&&retryAfter>0?Math.min(3000,Math.max(1000,retryAfter*1000)):1250));
  }
 
  if(!response.ok){const status=response.status;let detail;try{detail=await response.json()}catch{}const disabled=detail?.error?.details?.some(d=>d.reason==='SERVICE_DISABLED');throw new Error(disabled?'The Gemini Developer API is disabled for this AI Studio project. Source evidence remains available.':status===400||status===401||status===403?'Gemini rejected the credential or model configuration.':status===429?'Gemini free quota is temporarily exhausted. Source evidence remains available; no paid fallback is used.':`Gemini is unavailable (HTTP ${status}).`)}
