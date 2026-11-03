@@ -20,7 +20,7 @@ This audit compares the supplied ENAM brief with the implemented prototype. The 
 | Failures and latency | Live progress stream, bounded timeouts/retry, visible provider failure reason, previous report preserved | Google can still return 503/429; incomplete answers are not cached as completed |
 | Public delivery | Render app and public GitHub; no visitor sign-in; server-side credentials | Free hosting may wake slowly |
 | Covering note | Template in SUBMISSION.md covers decisions, exclusions and next work | Candidate must send the email |
-| Actual coding-agent build history | Still required separately | BUILD-DECISIONS.md and Git commits are not substitutes for a real conversation export/share link |
+| Actual coding-agent build history | Original user/assistant messages exported in BUILD-CONVERSATION.md | Credentials and private metadata are redacted; tool calls, reasoning and attachment bytes are omitted |
 
 ## Deliberately outside prototype scope
 

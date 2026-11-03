@@ -8,9 +8,9 @@ The original brief requests a mobile-first working prototype, GitHub repository,
 - Demo instructions: [EVALUATOR-GUIDE.md](EVALUATOR-GUIDE.md)
 - Scope: [FEATURE-AUDIT.md](FEATURE-AUDIT.md)
 - Build decisions: [BUILD-DECISIONS.md](BUILD-DECISIONS.md)
-- Actual coding-agent conversation export/share link: **candidate to add before sending**.
+- Actual coding-agent conversation export: [BUILD-CONVERSATION.md](BUILD-CONVERSATION.md).
 
-Do not present a generated development summary, Git commits or this checklist as the requested original conversation history. Remove credentials, private account information and unrelated material from any export before sharing it. No keys are needed by evaluators to use the live app.
+BUILD-CONVERSATION.md contains the actual original user/assistant messages, with credentials and private metadata redacted. Tool calls, internal reasoning and attachment bytes are omitted. It is not a generated development summary. No keys are needed by evaluators to use the live app.
 
 ## Covering email
 
@@ -29,7 +29,7 @@ I kept the backend modular, used deterministic calculations where possible, and 
 
 Live app: https://finn-investment-research-86hh.onrender.com/
 GitHub: https://github.com/Vivek280404/FINN_ENAM_HOLDINGS
-AI build history: [add the actual conversation share/export link or attach the redacted export]
+AI build history: https://github.com/Vivek280404/FINN_ENAM_HOLDINGS/blob/main/docs/BUILD-CONVERSATION.md
 
 The app requires no sign-in. Free hosting may need a short initial wake-up, and model/source availability can affect new research.
 

@@ -6,6 +6,8 @@ A mobile-first investor briefing and primary-source research application for the
 
 **Start here:** [five-minute evaluator guide](docs/EVALUATOR-GUIDE.md), [assignment coverage and limits](docs/FEATURE-AUDIT.md), [validation](docs/VALIDATION.md), [submission checklist](docs/SUBMISSION.md).
 
+**Build history:** [original user/assistant conversation export, with credentials redacted](docs/BUILD-CONVERSATION.md). Tool calls, internal reasoning and attachment bytes are omitted; this is an export of the actual conversation rather than a generated development summary.
+
 The two main workflows are briefing → event → guidance investigation, and company research → contextual follow-up → saved history. The default watchlist has 18 companies; live research has been checked for Infosys, Dixon and Maruti. The brief's output examples are a menu, not a claim that every possible financial workflow is complete. Filing and EOD checks run on request; continuous notifications are outside this prototype.
 
 ## Deploy
