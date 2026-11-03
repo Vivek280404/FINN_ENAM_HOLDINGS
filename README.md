@@ -2,6 +2,8 @@
 
 A mobile-first investor briefing and primary-source research application for the ENAM build challenge. Research, source citations, financial validation, browser history and follow-up questions work without visitor accounts or sign-in.
 
+**Live app:** https://finn-investment-research-86hh.onrender.com/ — no visitor sign-in required.
+
 ## Deploy
 
 [Deploy to Render](https://render.com/deploy?repo=https://github.com/Vivek280404/FINN_ENAM_HOLDINGS)
