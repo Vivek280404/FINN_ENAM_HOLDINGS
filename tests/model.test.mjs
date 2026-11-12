@@ -1,5 +1,6 @@
-import test from 'node:test';import assert from 'node:assert/strict';import {modelAnswer,configured} from '../src/model.js';
+import test,{beforeEach} from 'node:test';import assert from 'node:assert/strict';import {modelAnswer,configured} from '../src/model.js';import {createCredentialRouter} from '../src/provider-fallback.js';
 const env={GEMINI_API_KEY:'test-only',RESEARCH_MODEL:'gemini-2.5-flash',RESEARCH_FREE_TIER_CONFIRMED:'true'},evidence=[{id:'p1',text:'Revenue increased.',page:2}];
+beforeEach(()=>{env.RESEARCH_CREDENTIAL_ROUTER=createCredentialRouter()});
 test('Gemini credential remains server-side and uses header',async()=>{const answer=await modelAnswer('Revenue?',evidence,env,async(url,request)=>{assert.ok(!url.includes('test-only'));assert.equal(request.headers['x-goog-api-key'],'test-only');const p=JSON.parse(request.body);assert.equal(p.generationConfig.responseMimeType,'application/json');return Response.json({candidates:[{content:{parts:[{text:JSON.stringify({title:'Revenue',claims:[{text:'Revenue increased.',sourceIds:['p1'],type:'Reported'}]})}]}}]})});assert.equal(answer.claims.length,1)});
 test('no evidence means no model call',async()=>assert.equal(await modelAnswer('Question',[],env,()=>{throw Error('Must not call')}),null));
 test('invalid credential returns safe explanation',async()=>await assert.rejects(()=>modelAnswer('Question',evidence,env,async()=>new Response('',{status:400})),/credential/));

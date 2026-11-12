@@ -34,7 +34,7 @@ for(const migration of journal.entries){
 DB={prepare(sql){return {bind(...values){return {async all(){return {results:db.prepare(sql).all(...values)}},async first(){return db.prepare(sql).get(...values)},async run(){return db.prepare(sql).run(...values)}}}}}};
 }
 const BUCKET={async put(key,bytes){if(!/^documents\/[a-f0-9]{64}$/.test(key))throw new Error('Invalid document storage key');const path=resolve(dataDir,key);await mkdir(dirname(path),{recursive:true});await writeFile(path,bytes)}};
-const env={DB,BUCKET,RESEARCH_FREE_TIER_CONFIRMED:process.env.RESEARCH_FREE_TIER_CONFIRMED,GEMINI_API_KEY:process.env.GEMINI_API_KEY,RESEARCH_API_KEY:process.env.RESEARCH_API_KEY,RESEARCH_MODEL:process.env.RESEARCH_MODEL,PUBLIC_DEMO:config.publicDemo?'true':'false'};
+const env={DB,BUCKET,RESEARCH_FREE_TIER_CONFIRMED:process.env.RESEARCH_FREE_TIER_CONFIRMED,GEMINI_API_KEY:process.env.GEMINI_API_KEY,GEMINI_API_KEYS:process.env.GEMINI_API_KEYS,RESEARCH_API_KEY:process.env.RESEARCH_API_KEY,RESEARCH_MODEL:process.env.RESEARCH_MODEL,PUBLIC_DEMO:config.publicDemo?'true':'false'};
 async function send(res,response){
  res.writeHead(response.status,Object.fromEntries(response.headers));res.flushHeaders();
  if(!response.body){res.end();return}

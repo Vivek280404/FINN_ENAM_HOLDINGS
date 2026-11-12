@@ -2,6 +2,8 @@
 
 ## Recovery update — 12 November 2026
 
+Credential fallback update: 140 tests pass. Five supplied credentials each returned HTTP 200 from Google's model-list endpoint and included the configured model. Tests cover invalid-credential traversal, healthy-key preference, temporary failure recovery, cooldown expiry, schema-error stopping, shared budget enforcement and stopping on HTTP 429. Model-list access is not proof of additional independent quota or a guarantee against provider-wide outages.
+
 133 tests pass. Live diagnosis found a successful Infosys answer persisted after a temporary provider failure, while the client connection dropped before receiving its final packet. Reopening the same answer in the browser succeeded. New tests reproduce that lost-response case and verify one bounded reconnect, persisted-answer reuse, preserved parent context, no repeated forced refresh, no repeated generation, and no recovery after cancellation or a terminal provider error.
 
 ## Automated and integration checks
