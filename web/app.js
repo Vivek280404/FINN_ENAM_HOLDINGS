@@ -1,4 +1,4 @@
-import {readResearchStream} from './research-stream.js';
+import {researchRequest} from './research-stream.js';
 import {signInCard,pendingResearch} from './public-access.js';
 import {threadNavigation,followupPanel} from './conversation.js';
 import {exportMarkdown} from './report-export.js';
@@ -14,9 +14,8 @@ let prefs;try{prefs={volume:2,price:5,performance:true,management:true,governanc
 let saved;try{saved=JSON.parse(localStorage.getItem('finn-saved')||'[]')}catch{saved=[]}
 const date=d=>{const t=new Date(d);return Number.isNaN(+t)?d:t.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})};
 async function api(path,body,signal){
- const streaming=path==='/api/research'&&body;
- const r=await fetch(streaming?'/api/research/stream':path,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined,signal:signal?AbortSignal.any([signal,AbortSignal.timeout(streaming?240000:90000)]):AbortSignal.timeout(streaming?240000:90000)});
- if(streaming)return readResearchStream(r,packet=>{const label=document.getElementById('researchProgress');if(label)label.textContent=packet.message+' · '+packet.elapsed+'s';});
+ if(path==='/api/research'&&body)return researchRequest(body,{signal,onProgress:packet=>{const label=document.getElementById('researchProgress');if(label)label.textContent=packet.message+' · '+packet.elapsed+'s';}});
+ const r=await fetch(path,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined,signal:signal?AbortSignal.any([signal,AbortSignal.timeout(90000)]):AbortSignal.timeout(90000)});
  let d;try{d=await r.json()}catch{throw Error('The service returned an unreadable response. Please retry.')}if(!r.ok)throw Error(d.error||'Request could not be completed');return d;
 }
 function toast(t){$('#toast').textContent=t;$('#toast').style.display='block';setTimeout(()=>$('#toast').style.display='none',3500)}

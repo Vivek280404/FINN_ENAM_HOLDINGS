@@ -28,3 +28,5 @@ Startup applies versioned PostgreSQL migrations in transactions. Millisecond tim
 ## Long research requests
 
 The browser uses `/api/research/stream` for progress and a final answer over one connection. Heartbeats prevent an idle connection while documents or synthesis are pending. A research operation has a three-minute stream deadline, with a four-minute browser allowance including host wake-up time. Ordinary `/api/research` remains supported for JSON clients. Errors and interrupted connections produce retry instructions; incomplete research is logged as partial and is never cached as a completed answer.
+
+If the transport drops before the final result, the browser reconnects once within the same four-minute deadline. The reconnect retains the question and parent context but disables forced refresh, so a saved or in-flight answer can be recovered without repeating generation. Provider error packets and user cancellations are not automatically resubmitted.

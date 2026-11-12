@@ -1,5 +1,9 @@
 # Validation record — 3 November 2026
 
+## Recovery update — 12 November 2026
+
+133 tests pass. Live diagnosis found a successful Infosys answer persisted after a temporary provider failure, while the client connection dropped before receiving its final packet. Reopening the same answer in the browser succeeded. New tests reproduce that lost-response case and verify one bounded reconnect, persisted-answer reuse, preserved parent context, no repeated forced refresh, no repeated generation, and no recovery after cancellation or a terminal provider error.
+
 ## Automated and integration checks
 
 The current release runs 130 targeted tests. These cover financial comparability, units, scope, fiscal periods, negative/zero bases, guidance horizons, citation IDs, source restrictions, structured reports, contextual follow-ups, owner isolation, caching, announcement screening, database migrations, persistent usage counters, streaming, interrupted connections, provider errors and bounded retries. Tests do not establish universal financial accuracy.
